@@ -323,6 +323,7 @@ static inline void readMAP()
 
 void readTPS()
 {
+  #if defined(ANALOG_TPS)
   TPSlast = currentStatus.TPS;
   TPSlast_time = TPS_time;
   #if defined(ANALOG_ISR)
@@ -363,6 +364,7 @@ void readTPS()
   }
   else { currentStatus.CTPSActive = 0; }
   TPS_time = micros();
+  #endif
 }
 
 void readCLT(bool useFilter)

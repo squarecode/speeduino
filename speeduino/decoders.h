@@ -27,6 +27,9 @@ uint16_t getRPM_missingTooth();
 int getCrankAngle_missingTooth();
 extern void triggerSetEndTeeth_missingTooth();
 
+void triggerTPS_RC_PWM();
+
+
 void triggerSetup_DualWheel();
 void triggerPri_DualWheel();
 void triggerSec_DualWheel();
@@ -142,6 +145,7 @@ void triggerSetEndTeeth_ThirtySixMinus222();
 
 extern void (*triggerHandler)(); //Pointer for the trigger function (Gets pointed to the relevant decoder)
 extern void (*triggerSecondaryHandler)(); //Pointer for the secondary trigger function (Gets pointed to the relevant decoder)
+extern void (*triggerTPSHandler)();
 extern uint16_t (*getRPM)(); //Pointer to the getRPM function (Gets pointed to the relevant decoder)
 extern int (*getCrankAngle)(); //Pointer to the getCrank Angle function (Gets pointed to the relevant decoder)
 extern void (*triggerSetEndTeeth)(); //Pointer to the triggerSetEndTeeth function of each decoder

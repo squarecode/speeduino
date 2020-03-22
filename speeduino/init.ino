@@ -1105,6 +1105,7 @@ void setPinMapping(byte boardID)
       pinLaunch = 51; //Can be overwritten below
       pinFlex = 2; // Flex sensor (Must be external interrupt enabled)
       pinResetControl = 43; //Reset control output
+      pinDigitalTPS = 20; // PCINT3
 
       #if defined(CORE_TEENSY35)
         pinInjector6 = 51;
@@ -2351,6 +2352,8 @@ void initialiseTriggers()
   pinMode(pinTrigger, INPUT);
   pinMode(pinTrigger2, INPUT);
   pinMode(pinTrigger3, INPUT);
+  pinMode(pinDigitalTPS,INPUT);
+
   //digitalWrite(pinTrigger, HIGH);
   detachInterrupt(triggerInterrupt);
   detachInterrupt(triggerInterrupt2);
@@ -2366,6 +2369,7 @@ void initialiseTriggers()
       triggerSetup_missingTooth();
       triggerHandler = triggerPri_missingTooth;
       triggerSecondaryHandler = triggerSec_missingTooth;
+      triggerTPSHandler = triggerTPS_RC_PWM;
       decoderHasSecondary = true;
       getRPM = getRPM_missingTooth;
       getCrankAngle = getCrankAngle_missingTooth;
@@ -2377,7 +2381,10 @@ void initialiseTriggers()
       else { secondaryTriggerEdge = FALLING; }
 
       attachInterrupt(triggerInterrupt, triggerHandler, primaryTriggerEdge);
+      attachInterrupt(3, triggerTPSHandler, CHANGE); // PIN20 maps to 3 for 2560
+
       attachInterrupt(triggerInterrupt2, triggerSecondaryHandler, secondaryTriggerEdge);
+      
 
       /*
       if(configPage4.TrigEdge == 0) { attachInterrupt(triggerInterrupt, triggerHandler, RISING); }

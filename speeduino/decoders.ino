@@ -29,6 +29,7 @@ toothLastToothTime - The time (In uS) that the last primary tooth was 'seen'
 
 void (*triggerHandler)(); //Pointer for the trigger function (Gets pointed to the relevant decoder)
 void (*triggerSecondaryHandler)(); //Pointer for the secondary trigger function (Gets pointed to the relevant decoder)
+void (*triggerTPSHandler)();
 uint16_t (*getRPM)(); //Pointer to the getRPM function (Gets pointed to the relevant decoder)
 int (*getCrankAngle)(); //Pointer to the getCrank Angle function (Gets pointed to the relevant decoder)
 void (*triggerSetEndTeeth)(); //Pointer to the triggerSetEndTeeth function of each decoder
@@ -348,6 +349,23 @@ void triggerSetup_missingTooth()
   toothOneTime = 0;
   toothOneMinusOneTime = 0;
   MAX_STALL_TIME = (3333UL * triggerToothAngle * (configPage4.triggerMissingTeeth + 1)); //Minimum 50rpm. (3333uS is the time per degree at 50rpm)
+}
+volatile unsigned long tRCStart;
+void triggerTPS_RC_PWM()
+{
+  unsigned long rcTime = 0;
+  
+  if(digitalRead(pinDigitalTPS)==HIGH)
+  {
+    tRCStart = micros();
+  }else{
+    unsigned long tNow = micros();
+    rcTime = tNow-tRCStart;
+
+    if(rcTime > 999 && rcTime < 2000){
+      currentStatus.TPS = map(rcTime,1000,2000,0,100);
+    }
+  }
 }
 
 void triggerPri_missingTooth()
