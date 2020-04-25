@@ -657,11 +657,13 @@ void triggerSetup_DualWheel()
   decoderIsSequential = true;
   triggerToothAngleIsCorrect = true; //This is always true for this pattern
   MAX_STALL_TIME = (3333UL * triggerToothAngle); //Minimum 50rpm. (3333uS is the time per degree at 50rpm)
+  configPage4.ignCranklock = true;
 }
 
 
 void triggerPri_DualWheel()
 {
+  endCoil1Charge();
     curTime = micros();
     curGap = curTime - toothLastToothTime;
     if ( curGap >= triggerFilterTime )
@@ -702,6 +704,7 @@ void triggerPri_DualWheel()
 
 void triggerSec_DualWheel()
 {
+  beginCoil1Charge();
   curTime2 = micros();
   curGap2 = curTime2 - toothLastSecToothTime;
   if ( curGap2 >= triggerSecFilterTime )

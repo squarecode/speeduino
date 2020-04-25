@@ -882,10 +882,10 @@ void loop()
         //This is a safety step to prevent the ignition start time occuring AFTER the target tooth pulse has already occcured. It simply moves the start time forward a little, which is compensated for by the increase in the dwell time
         if(currentStatus.RPM < 250)
         {
-          ignition1StartAngle -= 5;
-          ignition2StartAngle -= 5;
-          ignition3StartAngle -= 5;
-          ignition4StartAngle -= 5;
+          // ignition1StartAngle -= 5;
+          // ignition2StartAngle -= 5;
+          // ignition3StartAngle -= 5;
+          // ignition4StartAngle -= 5;
         }
       }
       else { fixedCrankingOverride = 0; }
